@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Netflix-style color palette - Dark with Red accents */
+:root {
+    --font-sans: "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Geneva, Verdana, sans-serif;
+    --background: #141414;
+    --foreground: #ffffff;
+    --card: #1f1f1f;
+    --card-foreground: #ffffff;
+    --primary: #e50914;
+    /* Netflix Red */
+    --primary-foreground: #ffffff;
+    --secondary: #2a2a2a;
+    --secondary-foreground: #e5e5e5;
+    --muted: #333333;
+    --muted-foreground: #a3a3a3;
+    --accent: #404040;
+    --accent-foreground: #ffffff;
+    --destructive: #e50914;
+    --border: #333333;
+    --input: #333333;
+    --ring: #e50914;
+    --sidebar: #0a0a0a;
+    --sidebar-foreground: #e5e5e5;
+}
+
+@layer base {
+    * {
+        border-color: var(--border);
+    }
+
+    body {
+        font-family: var(--font-sans);
+        background: var(--background);
+        color: var(--foreground);
+        line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #1f1f1f;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #404040;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
+
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded font-medium text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    .btn-primary {
+        background: var(--primary);
+        color: var(--primary-foreground);
+        @apply btn hover:bg-red-700 focus:ring-red-500;
+    }
+
+    .btn-secondary {
+        background: var(--secondary);
+        color: var(--secondary-foreground);
+        @apply btn hover:bg-neutral-600 focus:ring-neutral-400;
+    }
+
+    .btn-ghost {
+        @apply btn bg-transparent text-neutral-300 hover:bg-neutral-800 hover:text-white;
+    }
+
+    .input {
+        @apply w-full px-4 py-3 bg-neutral-800 border border-neutral-700 rounded text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-150;
+    }
+
+    .input-error {
+        @apply input border-red-500 focus:ring-red-500 focus:border-red-500;
+    }
+
+    .card {
+        background: var(--card);
+        @apply rounded-lg border border-neutral-800;
+    }
+
+    .card-hover {
+        @apply card hover:border-neutral-600 transition-all duration-200;
+    }
+
+    .badge {
+        @apply inline-flex items-center px-2.5 py-1 rounded text-xs font-medium;
+    }
+
+    .badge-success {
+        @apply bg-green-900/50 text-green-400;
+    }
+
+    .badge-warning {
+        @apply bg-amber-900/50 text-amber-400;
+    }
+
+    .badge-error {
+        @apply bg-red-900/50 text-red-400;
+    }
+
+    .badge-info {
+        @apply bg-blue-900/50 text-blue-400;
+    }
+}
+
+/* Markdown */
+.markdown h1 {
+    @apply text-2xl font-semibold mb-4 mt-6 text-white;
+}
+
+.markdown h2 {
+    @apply text-xl font-semibold mb-3 mt-5 text-white;
+}
+
+.markdown h3 {
+    @apply text-lg font-medium mb-2 mt-4 text-neutral-200;
+}
+
+.markdown p {
+    @apply mb-4 text-neutral-300;
+}
+
+.markdown ul {
+    @apply list-disc pl-6 mb-4 space-y-1;
+}
+
+.markdown ol {
+    @apply list-decimal pl-6 mb-4 space-y-1;
+}
+
+.markdown li {
+    @apply text-neutral-300;
+}
+
+.markdown code {
+    @apply px-1.5 py-0.5 bg-neutral-800 rounded text-red-400 text-sm font-mono;
+}
+
+.markdown pre {
+    @apply bg-black text-neutral-100 rounded-lg p-4 mb-4 overflow-x-auto border border-neutral-800;
+}
+
+.markdown pre code {
+    @apply bg-transparent p-0 text-neutral-100;
+}
+
+.markdown table {
+    @apply w-full mb-4 border-collapse;
+}
+
+.markdown th {
+    @apply border border-neutral-700 px-4 py-2 bg-neutral-800 text-left font-medium text-white;
+}
+
+.markdown td {
+    @apply border border-neutral-700 px-4 py-2 text-neutral-300;
+}

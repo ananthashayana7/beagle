@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beagle - AI-Powered Data Analysis</title>
+    <meta name="description" content="Beagle: Your intelligent data analysis companion. Upload data, ask questions in natural language, and get instant visualizations and insights.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
+    <!-- Papa Parse for CSV -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    
+    <!-- XLSX for Excel files -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <!-- Marked for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    
+    <!-- Highlight.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/r.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/sql.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loader"></div>
+        <p>Analyzing your data...</p>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">🐕</span>
+            <span class="logo-text">Beagle</span>
+        </div>
+        <nav class="nav">
+            <button id="newSessionBtn" class="btn btn-ghost">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14"/>
+                </svg>
+                New Session
+            </button>
+            <button id="exportBtn" class="btn btn-ghost" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                Export
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Sidebar: Data Preview -->
+        <aside id="sidebar" class="sidebar hidden">
+            <div class="sidebar-header">
+                <h3>Data Preview</h3>
+                <button id="closeSidebar" class="btn-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="data-info">
+                <span id="dataFileName">No file loaded</span>
+                <span id="dataRowCount">0 rows × 0 columns</span>
+            </div>
+            <div id="dataTableContainer" class="data-table-container">
+                <table id="dataTable" class="data-table">
+                    <thead id="dataTableHead"></thead>
+                    <tbody id="dataTableBody"></tbody>
+                </table>
+            </div>
+            <div class="column-list">
+                <h4>Columns</h4>
+                <ul id="columnList"></ul>
+            </div>
+        </aside>
+
+        <!-- Chat Area -->
+        <section class="chat-section">
+            <!-- Welcome State -->
+            <div id="welcomeState" class="welcome-state">
+                <div class="welcome-content">
+                    <div class="welcome-icon">🐕</div>
+                    <h1>Welcome to <span class="gradient-text">Beagle</span></h1>
+                    <p class="welcome-subtitle">Your intelligent data analysis companion</p>
+                    
+                    <div class="upload-zone" id="uploadZone">
+                        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls,.json" hidden>
+                        <div class="upload-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                            </svg>
+                        </div>
+                        <p class="upload-text">Drag & drop your file here</p>
+                        <p class="upload-hint">or click to browse</p>
+                        <div class="supported-formats">
+                            <span class="format-badge">CSV</span>
+                            <span class="format-badge">Excel</span>
+                            <span class="format-badge">JSON</span>
+                        </div>
+                    </div>
+
+                    <div class="demo-section">
+                        <p>Or try with sample data:</p>
+                        <button id="loadSampleBtn" class="btn btn-secondary">
+                            Load Sample Dataset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat State -->
+            <div id="chatState" class="chat-state hidden">
+                <div id="chatMessages" class="chat-messages"></div>
+                
+                <div class="chat-input-container">
+                    <div class="suggestions" id="suggestions">
+                        <button class="suggestion-chip" data-query="Give me a summary of this data">📊 Data Summary</button>
+                        <button class="suggestion-chip" data-query="What are the key insights from this data?">💡 Key Insights</button>
+                        <button class="suggestion-chip" data-query="Create a visualization of the main trends">📈 Visualize Trends</button>
+                        <button class="suggestion-chip" data-query="Generate Python code to analyze this data">🐍 Python Code</button>
+                    </div>
+                    <form id="chatForm" class="chat-form">
+                        <button type="button" id="toggleDataBtn" class="btn-icon" title="View Data">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                        </button>
+                        <input type="text" id="chatInput" placeholder="Ask anything about your data..." autocomplete="off">
+                        <button type="submit" id="sendBtn" class="btn btn-primary" disabled>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualization Panel -->
+        <aside id="vizPanel" class="viz-panel hidden">
+            <div class="viz-header">
+                <h3>Visualization</h3>
+                <div class="viz-controls">
+                    <select id="chartTypeSelect" class="select-control">
+                        <option value="bar">Bar Chart</option>
+                        <option value="line">Line Chart</option>
+                        <option value="pie">Pie Chart</option>
+                        <option value="doughnut">Doughnut</option>
+                        <option value="scatter">Scatter Plot</option>
+                    </select>
+                    <button id="downloadChartBtn" class="btn-icon" title="Download Chart">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                        </svg>
+                    </button>
+                    <button id="closeVizPanel" class="btn-icon" title="Close">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="viz-content">
+                <canvas id="chartCanvas"></canvas>
+            </div>
+        </aside>
+    </main>
+
+    <!-- API Key Modal -->
+    <div id="apiKeyModal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <h2>Configure AI Assistant</h2>
+            <p>Enter your Google Gemini API key to enable AI-powered analysis.</p>
+            <div class="form-group">
+                <label for="apiKeyInput">API Key</label>
+                <input type="password" id="apiKeyInput" placeholder="AIza...">
+            </div>
+            <p class="hint">Get your free API key from <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a></p>
+            <div class="modal-actions">
+                <button id="skipApiKeyBtn" class="btn btn-ghost">Skip (Use Demo Mode)</button>
+                <button id="saveApiKeyBtn" class="btn btn-primary">Save Key</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="analysis.js"></script>
+    <script src="charts.js"></script>
+    <script src="gemini.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
