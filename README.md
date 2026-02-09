@@ -1,4 +1,4 @@
-# 🐕 Beagle - Enterprise AI-Powered Data Analysis Platform
+#  Beagle - Enterprise AI-Powered Data Analysis Platform
 
 > Transform your data into actionable insights with natural language. Upload, analyze, and visualize in seconds.
 
@@ -13,14 +13,14 @@ Beagle is an enterprise-grade data intelligence platform that enables business l
 
 ### Key Features
 
-- **🤖 Natural Language Analysis** - Ask questions about your data in plain English
-- **📊 Automated Visualizations** - Generate Plotly charts with AI recommendations
-- **🐍 Sandboxed Code Execution** - Run Python securely with full data access
-- **🔐 Enterprise Security** - JWT authentication, RBAC, rate limiting
-- **📁 Multi-Format Support** - CSV, Excel, JSON, Parquet file processing
-- **⚡ Real-Time Processing** - Stream responses and live visualizations
+- ** Natural Language Analysis** - Ask questions about your data in plain English
+- ** Automated Visualizations** - Generate Plotly charts with AI recommendations
+- ** Sandboxed Code Execution** - Run Python securely with full data access
+- ** Enterprise Security** - JWT authentication, RBAC, rate limiting
+- ** Multi-Format Support** - CSV, Excel, JSON, Parquet file processing
+- ** Real-Time Processing** - Stream responses and live visualizations
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -42,7 +42,7 @@ Beagle is an enterprise-grade data intelligence platform that enables business l
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -94,7 +94,7 @@ npm install
 npm run dev
 ```
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 beagle/
@@ -124,7 +124,7 @@ beagle/
 └── README.md
 ```
 
-## 🔒 Security Features
+##  Security Features
 
 | Feature | Implementation |
 |---------|----------------|
@@ -136,7 +136,7 @@ beagle/
 | Code Execution | Sandboxed Python with AST validation |
 | File Handling | Type validation, size limits, secure storage |
 
-## 🔧 API Endpoints
+## API Endpoints
 
 | Category | Endpoint | Description |
 |----------|----------|-------------|
@@ -152,7 +152,7 @@ beagle/
 | **Visualize** | `POST /api/visualizations/generate` | Create chart |
 | | `GET /api/visualizations/suggest/{file_id}` | AI suggestions |
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -160,7 +160,7 @@ beagle/
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
 
