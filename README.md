@@ -37,7 +37,7 @@ Beagle is an enterprise-grade data intelligence platform that enables business l
 │  │  Security │ Rate Limit │ Sanitizer │ AI Service      │   │
 │  └──────────────────────────────────────────────────────┘   │
 ├─────────────────────────────────────────────────────────────┤
-│   PostgreSQL  │    Redis    │    MinIO    │    Gemini       │
+│   PostgreSQL  │    Redis    │    MinIO    │    RAG & NLP    │
 │   (Database)  │   (Cache)   │  (Storage)  │     (AI)        │
 └─────────────────────────────────────────────────────────────┘
 ```
