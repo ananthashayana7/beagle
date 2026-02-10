@@ -19,10 +19,26 @@ from app.core.sanitizer import sanitizer
 from app.core.rate_limiter import limiter
 from app.config import settings
 from app.services.process_executor import ProcessExecutor
+from app.services.docker_executor import DockerExecutor
+import logging
 
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
-code_executor = ProcessExecutor()
+
+# Select executor based on configuration
+if settings.execution_mode.upper() == "DOCKER":
+    try:
+        import docker
+        docker.from_env().ping()
+        code_executor = DockerExecutor()
+        logger.info("Using DockerExecutor for code execution")
+    except Exception as e:
+        logger.warning(f"Docker not available ({e}), falling back to ProcessExecutor")
+        code_executor = ProcessExecutor()
+else:
+    code_executor = ProcessExecutor()
+    logger.info("Using ProcessExecutor for code execution")
 
 
 @router.post("/", response_model=ExecutionResponse)
