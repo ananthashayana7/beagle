@@ -68,6 +68,7 @@ class Settings(BaseSettings):
     
     # Code Execution
     code_execution_timeout: int = Field(default=30, env="CODE_EXECUTION_TIMEOUT")
+    execution_mode: str = Field(default="DOCKER", env="EXECUTION_MODE")  # DOCKER or PROCESS
     allowed_imports: List[str] = Field(
         default=[
             "pandas", "numpy", "scipy", "sklearn", "statsmodels",

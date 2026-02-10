@@ -18,11 +18,29 @@ from app.core.security import get_current_active_user
 from app.core.sanitizer import sanitizer
 from app.core.rate_limiter import limiter
 from app.config import settings
-from app.services.code_executor import CodeExecutor
+from app.services.process_executor import ProcessExecutor
+from app.services.docker_executor import DockerExecutor
+from app.services.stateful_docker_executor import StatefulDockerExecutor
+import logging
 
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
-code_executor = CodeExecutor()
+
+# Select executor based on configuration
+if settings.execution_mode.upper() == "DOCKER":
+    try:
+        import docker
+        docker.from_env().ping()
+        # Use stateful executor for sessions
+        code_executor = StatefulDockerExecutor()
+        logger.info("Using StatefulDockerExecutor for code execution")
+    except Exception as e:
+        logger.warning(f"Docker not available ({e}), falling back to ProcessExecutor")
+        code_executor = ProcessExecutor()
+else:
+    code_executor = ProcessExecutor()
+    logger.info("Using ProcessExecutor for code execution")
 
 
 @router.post("/", response_model=ExecutionResponse)
