@@ -129,7 +129,7 @@ class Message(Base):
     content: Mapped[str] = mapped_column(Text, nullable=False)
     
     # Metadata (code blocks, chart configs, execution results, etc.)
-    metadata: Mapped[Optional[dict]] = mapped_column(JSONB, nullable=True)
+    msg_metadata: Mapped[Optional[dict]] = mapped_column("metadata", JSONB, nullable=True)
     
     # Execution tracking
     has_code: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -170,7 +170,7 @@ class Message(Base):
             "conversation_id": self.conversation_id,
             "role": self.role,
             "content": self.content,
-            "metadata": self.metadata,
+            "metadata": self.msg_metadata,
             "has_code": self.has_code,
             "has_visualization": self.has_visualization,
             "execution_id": self.execution_id,

@@ -18,11 +18,11 @@ from app.core.security import get_current_active_user
 from app.core.sanitizer import sanitizer
 from app.core.rate_limiter import limiter
 from app.config import settings
-from app.services.code_executor import CodeExecutor
+from app.services.process_executor import ProcessExecutor
 
 
 router = APIRouter()
-code_executor = CodeExecutor()
+code_executor = ProcessExecutor()
 
 
 @router.post("/", response_model=ExecutionResponse)

@@ -193,7 +193,7 @@ async def get_conversation(
                 conversation_id=m.conversation_id,
                 role=m.role,
                 content=m.content,
-                metadata=m.metadata,
+                metadata=m.msg_metadata,
                 has_code=m.has_code,
                 has_visualization=m.has_visualization,
                 execution_id=m.execution_id,
@@ -318,7 +318,7 @@ async def send_message(
         conversation_id=conversation_id,
         role="user",
         content=content,
-        metadata=message_data.metadata
+        msg_metadata=message_data.metadata
     )
     session.add(user_message)
     
@@ -347,7 +347,7 @@ async def send_message(
         conversation_id=conversation_id,
         role="assistant",
         content=ai_response.get("content", ""),
-        metadata=ai_response.get("metadata"),
+        msg_metadata=ai_response.get("metadata"),
         has_code=ai_response.get("has_code", False),
         has_visualization=ai_response.get("has_visualization", False),
         token_count=ai_response.get("token_count")
@@ -362,7 +362,7 @@ async def send_message(
         conversation_id=assistant_message.conversation_id,
         role=assistant_message.role,
         content=assistant_message.content,
-        metadata=assistant_message.metadata,
+        metadata=assistant_message.msg_metadata,
         has_code=assistant_message.has_code,
         has_visualization=assistant_message.has_visualization,
         execution_id=assistant_message.execution_id,
@@ -408,7 +408,7 @@ async def get_messages(
             conversation_id=m.conversation_id,
             role=m.role,
             content=m.content,
-            metadata=m.metadata,
+            metadata=m.msg_metadata,
             has_code=m.has_code,
             has_visualization=m.has_visualization,
             execution_id=m.execution_id,
