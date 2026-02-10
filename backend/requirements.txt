@@ -66,3 +66,4 @@ locust==2.20.1
 # Code Security
 bandit==1.7.7
 docker==7.0.0
+requests==2.31.0

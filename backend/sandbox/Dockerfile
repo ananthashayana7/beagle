@@ -17,12 +17,19 @@ RUN pip install --no-cache-dir \
     openpyxl \
     pyarrow \
     fastparquet \
-    yfinance
-    # prophet - commented out
+    yfinance \
+    flask \
+    dill
+
+# Copy execution server
+COPY execution_server.py /app/execution_server.py
 
 # Create a non-root user for security
 RUN useradd -m -u 1000 sandbox
 USER sandbox
 
-# Default command
-CMD ["python3"]
+# Expose port for the execution server
+EXPOSE 5000
+
+# Default command runs the execution server
+CMD ["python3", "execution_server.py"]
